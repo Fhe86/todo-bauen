@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Meine To-do-App: Schritt für Schritt</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237B4FD6'/%3E%3Cpath d='M16 34l12 12 21-24' stroke='white' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{--ink:#1E2142;--muted:#5F6384;--line:#E3DDF5;--accent:#7B4FD6;--soft:#EFE8FF;--warn:#FFF4DE;--ok:#E4F6EA;--bad:#FDE9E9}
+*{box-sizing:border-box}
+body{margin:0;background:#F7F4FF;color:var(--ink);font:17px/1.5 ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 14px 60px}
+.page{max-width:780px;margin:0 auto 28px}
+h1{font-size:38px;line-height:1.1;margin:0 0 8px}
+.h2{font-size:22px;margin:18px 0 8px}
+.kicker{margin:0 0 6px;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
+.lead{color:var(--muted);margin:0;font-size:18px}
+p{margin:4px 0 8px}
+.hero{display:flex;gap:20px;align-items:center;background:linear-gradient(135deg,#F3ECFF,#E4F6EA);border:2px solid var(--line);border-radius:22px;padding:22px 26px;margin:0 0 6px}
+.hero svg{flex:none}
+.route{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 14px;position:relative}
+.stop{background:#fff;border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 2px 0 var(--line);font-size:14px;line-height:1.3}
+.stop b{display:flex;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;align-items:center;justify-content:center;margin:0 auto 6px;font-size:18px}
+.card{background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 2px 0 var(--line);margin:10px 0}
+.part{display:flex;gap:14px;align-items:center;background:var(--soft);border-left:8px solid var(--accent);border-radius:14px;padding:10px 16px;margin:0 0 10px}
+.part .pnum{flex:none;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center}
+.part b{font-size:23px}
+.part small b{font-size:inherit}
+.part small,.partb small,.way small{display:block;color:var(--muted);font-size:15px;margin-top:1px}
+.partb{background:#fff;border:2px dashed var(--accent);border-radius:14px;padding:10px 16px;margin:0 0 10px}
+.partb b{font-size:20px}
+.way{background:#fff;border-left:8px solid #2E9E5B;border-radius:14px;padding:10px 16px;margin:10px 0}
+.way b{font-size:19px}
+.step{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:10px 14px;margin:8px 0;box-shadow:0 2px 0 var(--line);break-inside:avoid}
+.num{flex:none;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:21px}
+.step .txt{font-size:18px;line-height:1.4}
+.step .pic svg{display:block;width:150px;height:auto}
+label{display:block;font-weight:800;margin:12px 0 2px;font-size:18px}
+.hint{color:var(--muted);font-size:15px;margin:0 0 4px}
+textarea{width:100%;display:block;border:2px solid var(--line);border-radius:12px;padding:6px 10px;font:inherit;color:var(--ink);resize:vertical;background:repeating-linear-gradient(transparent 0,transparent 25px,#D9D2F0 25px,#D9D2F0 26px) 0 5px/100% 26px;line-height:26px;min-height:84px;background-color:#fff}
+textarea.big{min-height:188px}
+input.line{width:100%;font:inherit;border:0;border-bottom:2px solid #B9AEE0;padding:6px 2px;background:transparent;color:var(--ink)}
+.ideas{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.ideas span{background:var(--soft);border-radius:999px;padding:2px 12px;font-size:15px;color:#4E2BA8;font-weight:700}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 6px}
+.vs div{border-radius:14px;padding:10px 14px;font-size:16px}
+.bad{background:var(--bad)}.good{background:var(--ok)}
+.vs b{display:block;margin-bottom:2px}
+.warn{background:var(--warn);border-radius:14px;padding:10px 14px;margin:12px 0;font-size:16px}
+a{color:#4E2BA8;font-weight:800}
+.btn{display:inline-block;margin:0 0 14px;padding:10px 16px;border-radius:12px;background:var(--accent);color:#fff;border:0;font:inherit;font-weight:800;cursor:pointer}
+ul,ol{margin:4px 0;padding-left:22px}
+li{margin:4px 0}
+.check{padding-left:0}
+.check li{list-style:none}
+.check li::before{content:"\2610\00a0\00a0";color:var(--accent);font-weight:800}
+table{border-collapse:collapse;width:100%;font-size:15px;margin-top:6px}
+td,th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+textarea.big+.tools{margin-top:8px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 2px}
+.copy,.btn2{font:inherit;font-weight:800;font-size:15px;border:2px solid var(--accent);border-radius:12px;padding:8px 14px;cursor:pointer;min-height:44px}
+.copy{background:#fff;color:#4E2BA8}
+.btn2{background:var(--accent);color:#fff}
+.copy.ok{background:var(--ok);border-color:#2E9E5B;color:#1f7a45}
+.sent{background:var(--soft);border-radius:12px;padding:10px 14px;font-size:16px;margin:6px 0 4px;user-select:text;-webkit-user-select:text}
+.sents li{list-style:none;margin:8px 0 8px -22px;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.sents .copy{flex:none;font-size:14px;padding:4px 10px;min-height:36px}
+.qrbox{display:none;gap:14px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 14px;margin:10px 0;font-size:15px}
+.qrbox img{flex:none;border-radius:8px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1E2142;color:#fff;padding:10px 18px;border-radius:999px;font-weight:800;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+.toast.show{opacity:1}
+@media (max-width:620px){
+ .route{grid-template-columns:1fr 1fr}
+ .vs{grid-template-columns:1fr}
+ .step{grid-template-columns:44px 1fr}.step .pic{grid-column:1/-1;text-align:center}
+ .hero{flex-direction:column;text-align:center}
+}
+@page{size:A4;margin:12mm}
+@media print{
+ .qrbox{display:flex}
+ body{background:#fff;padding:0;font-size:15px;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .btn,.tools,.toast,.copy{display:none}
+ .page{max-width:none;margin:0;break-after:page;page-break-after:always}
+ .page:last-child{break-after:auto;page-break-after:auto}
+ h1{font-size:30px}.h2{font-size:18px;margin:12px 0 6px}
+ .hero{background:#fff;border:2px solid var(--line);padding:14px 20px}
+ .hero svg{width:110px;height:110px}
+ .card,.step,.stop{box-shadow:none;border:1.5px solid var(--line)}
+ .card{padding:11px 15px;margin:9px 0;break-inside:avoid}
+ .part{padding:8px 14px;margin-bottom:9px}.part .pnum{width:40px;height:40px;font-size:21px}.part b{font-size:21px}
+ .step{padding:10px 14px;margin:9px 0}.step .txt{font-size:17px}.step .pic svg{width:160px}
+ .warn{break-inside:avoid;padding:9px 13px;margin:10px 0;font-size:15px}
+ textarea{min-height:84px;border-width:1.5px}textarea.big{min-height:180px}
+ label{margin:8px 0 1px;font-size:15px}
+ table{font-size:13.5px}
+}
+</style>
+</head>
+<body>
+<section class="page">
+<button class="btn" onclick="window.print()">Als PDF herunterladen</button>
+<div class="hero">
+  <div class="hero-text">
+    <p class="kicker">Informatik · Schritt für Schritt</p>
+    <h1>Meine eigene To-do-App</h1>
+    <p class="lead">Du baust dir mit Hilfe einer KI eine App für dein iPad. Sie merkt sich deine Aufgaben und startet wie jede andere App. Du brauchst nur ein iPad und etwas Geduld.</p>
+  </div>
+  <svg viewBox="0 0 150 150" width="150" height="150" aria-hidden="true"><rect x="25" y="14" width="100" height="122" rx="16" fill="#1b2a4e"/><rect x="33" y="24" width="84" height="102" rx="8" fill="#26396a"/><circle cx="48" cy="48" r="8" fill="none" stroke="#7CF0A8" stroke-width="3"/><path d="M44 48l3 3 6-7" stroke="#7CF0A8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="62" y="44" width="42" height="8" rx="4" fill="#a9b8e0"/><circle cx="48" cy="76" r="8" fill="none" stroke="#7CF0A8" stroke-width="3"/><rect x="62" y="72" width="34" height="8" rx="4" fill="#a9b8e0"/><circle cx="48" cy="104" r="8" fill="none" stroke="#7CF0A8" stroke-width="3"/><rect x="62" y="100" width="40" height="8" rx="4" fill="#a9b8e0"/></svg>
+</div>
+<h2 class="h2">Dein Weg in 5 Stationen</h2>
+<div class="route"><div class="stop"><b>1</b><span>Prompt schreiben</span></div><div class="stop"><b>2</b><span>ChatGPT baut die App</span></div><div class="stop"><b>3</b><span>Datei auf dem iPad</span></div><div class="stop"><b>4</b><span>Ins Internet stellen</span></div><div class="stop"><b>5</b><span>Auf den Home-Bildschirm</span></div></div>
+<div class="card">
+<b>Das brauchst du</b>
+<ul class="check">
+<li>Ein iPad mit Internet</li>
+<li>Die kostenlose Version von ChatGPT (kein Bezahl-Abo, gib nie Zahlungsdaten ein)</li>
+<li>Die Apps <b>Safari</b> und <b>Dateien</b> (sind schon auf dem iPad)</li>
+<li>Etwa eine Schulstunde Zeit</li>
+</ul>
+</div>
+<div class="qrbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQMAAABDsxw2AAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB7UlEQVRoge2aPZKDMAyFlaFI6SPkKBwNjsZROAIlRQat9WOZye6WghRPTRz7S/XG0pMc4hZEz4M0Xr4ztwVvBCwXW/RoYBr5oInf8u1Rd4eK7fa7CVg6Vqoa6yBiqSzEa6i2i5YHsO/DRtswTVnEBXY9JqezfOH94fkN2GVY5Ld6OteFxuJX5o80COw+rIVh5W35bdyGf5wDsATsI0pzaHUxfx4Cy8JMjdVvioklxqwupvVZJdzkIgH7Ciw+ey9j4rolWEjzG7BkzMXqvUwrLhJehIDlYizOi15vinpiVabyE+90ulnAbsdUU/djp15GpLT8xkdIDywLqxumhi20sXmyR89vwFKxWk8On0FqWosmJeyx1x5g92PeO767pvU3x5m3NAgsEyOdvYQsYo9lCKNiyWFLg8AyMUtg4sdsuiKhtd5jKX0UBux2rPgD16I1SFx0qC1aFtcUWCrWJvaqz+aGeRQXYE1NS4PAUjHSWt9fUlS5EleG+xMwsHuxHqMoGC56s2JkLLBkjFsYFn6snJ69AgeWhS1kpzG6t7TmM/xT4wnsC7D2Umw3y1203KwuLgG7Dgt7zD3zjcxWjIBdhrW/rKhqU0t9v8QCdhem0p3+aMSrbKgxO436gaViLaKXqWLZE7BesdZRArsf+wElmXpPCNt1wgAAAABJRU5ErkJggg==" alt="QR-Code zur digitalen Anleitung" width="84" height="84"><div><b>Digital ist es einfacher.</b><br>Auf dem iPad kannst du in den Feldern schreiben, alles kopieren und in ChatGPT einfügen:<br><b>fhe86.github.io/todo-bauen</b></div></div>
+<div class="warn"><b>So gehst du vor:</b> Mach immer nur den Schritt, bei dem du gerade bist. Hake ihn ab, bevor du weitermachst. Wenn etwas nicht klappt, schau am Ende auf die Hilfe-Seite.</div>
+</section>
+<section class="page"><div class="part"><span class="pnum">1</span><div><b>Prompt schreiben</b><small>Ein Prompt ist deine Anweisung an die KI. Je genauer du bist, desto besser wird deine App.</small></div></div>
+<div class="vs">
+<div class="bad"><b>Schlechter Prompt</b>„Mach mir eine To-do-App."</div>
+<div class="good"><b>Guter Prompt</b>„Baue eine To-do-App für mein iPad. Ich will Aufgaben eintragen, abhaken und löschen. Der Hintergrund ist dunkelblau, die Schrift groß."</div>
+</div>
+<div class="card"><label for="f1">A) Was soll die App können?</label><p class="hint">Was brauchst du jeden Tag? Die blauen Wörter sind nur Ideen, du darfst eigene erfinden.</p><div class="ideas"><span>Aufgabe eintragen</span><span>abhaken</span><span>löschen</span><span>Datum</span><span>Fach auswählen</span><span>wichtig markieren</span><span>Zähler: Wie viele sind erledigt?</span></div><textarea id="f1"></textarea><div class="tools"><button type="button" class="copy" data-copy="f1">Text kopieren</button></div><label for="f2">B) Wie soll sie aussehen?</label><p class="hint">Farben, Stimmung, Lieblingsthema.</p><div class="ideas"><span>Lieblingsfarbe</span><span>dunkel oder hell</span><span>runde Ecken</span><span>große Buttons</span><span>Fußball-Stil</span><span>Gaming-Stil</span><span>Emoji bei jeder Aufgabe</span></div><textarea id="f2"></textarea><div class="tools"><button type="button" class="copy" data-copy="f2">Text kopieren</button></div></div></section>
+<section class="page"><div class="card"><label for="f3">C) Wer benutzt sie und wo?</label><p class="hint">Zum Beispiel: „Ich, auf meinem iPad, in der Schule und zu Hause."</p><textarea id="f3" style="min-height:52px"></textarea><div class="tools"><button type="button" class="copy" data-copy="f3">Text kopieren</button></div>
+<label>D) Spielregeln für die KI (einfach übernehmen)</label>
+<ul class="check" id="rules">
+<li>Alles in <b>einer einzigen Datei</b> namens index.html.</li>
+<li>Keine fremden Bibliotheken, keine Anmeldung.</li>
+<li>Die Aufgaben werden <b>im Browser gespeichert</b> (localStorage), damit sie nach dem Schließen noch da sind.</li>
+<li>Für das <b>iPad</b>: große Tippflächen, startet im Vollbild.</li>
+<li>Kein prompt() und kein alert(), sondern eigene Eingabefelder.</li>
+<li>Gib mir die fertige Datei <b>zum Herunterladen</b> als Link (Dateiname index.html).</li>
+</ul>
+<div class="tools"><button type="button" class="copy" data-copy-list="rules">Spielregeln kopieren</button></div>
+<label for="f4">Meine eigenen Zusatzregeln:</label><textarea id="f4" style="min-height:52px"></textarea></div>
+<div class="card">
+<label for="f5">E) Mein fertiger Prompt</label>
+<p class="hint">Schreibe A bis D zu einem Text zusammen. Fang so an: „Baue mir eine To-do-App als einzelne index.html. Sie soll …"</p>
+<textarea id="f5" class="big"></textarea>
+<div class="tools"><button type="button" class="btn2" id="build">Aus A bis D zusammenbauen</button><button type="button" class="copy" data-copy="f5">Prompt kopieren</button></div>
+<p class="hint">Dann bei ChatGPT einfügen: Tippe ins Eingabefeld, halte den Finger darauf und wähle „Einsetzen".</p></div></section>
+<section class="page"><div class="part"><span class="pnum">+</span><div><b>ChatGPT als Denk-Partner</b><small>Du musst den Prompt nicht allein schreiben. ChatGPT kann mit dir zusammen daran arbeiten.</small></div></div><div class="warn"><b>Wichtig:</b> Schreibe zuerst <b>selbst</b> deine Ideen in die Felder A bis C. Es ist deine App! ChatGPT hilft dir nur beim Verbessern.</div><div class="card"><b>Möglichkeit 1: ChatGPT fragt dich aus</b><p class="hint">Du hast noch keine Idee? Dann soll ChatGPT dir Fragen stellen.</p><div class="sent" id="s1">Ich bin Schüler oder Schülerin und möchte mir eine To-do-App für mein iPad bauen lassen. Hilf mir, einen guten Prompt dafür zu schreiben. Stelle mir nacheinander Fragen, immer nur eine Frage pro Nachricht, zum Beispiel zu Funktionen, Aussehen und Farben. Schreibe zum Schluss einen fertigen Prompt für mich, der eine einzelne Datei index.html verlangt, die ich herunterladen kann.</div></div><div class="card"><b>Möglichkeit 2: ChatGPT prüft deinen Prompt</b><p class="hint">Du hast schon einen Prompt in Feld E? Dann lass ihn prüfen. Füge ihn hinter diesen Satz ein.</p><div class="sent" id="s2">Hier ist mein Prompt für eine To-do-App. Was fehlt noch, damit die App gut wird? Gib mir drei kurze Verbesserungsvorschläge als Fragen, aber schreibe meinen Prompt nicht selbst um. Mein Prompt:</div></div><div class="card"><b>Möglichkeit 3: ChatGPT erklärt dir den Code</b><p class="hint">Wenn die App fertig ist: Verstehe, was du gebaut hast.</p><div class="sent" id="s3">Erkläre mir in einfachen Worten, was in deiner App passiert. Nenne mir die drei wichtigsten Teile des Codes und was sie tun.</div></div><div class="card"><b>So gehst du vor</b><ol><li>Tippe bei einem Satz auf <b>„Kopieren"</b>.</li><li>Öffne ChatGPT und füge den Satz ein (Eingabefeld lange drücken, „Einsetzen").</li><li>Antworte auf die Fragen. Du kannst jederzeit sagen: „Das gefällt mir nicht, mach es anders."</li><li>Kopiere am Ende den fertigen Prompt aus ChatGPT in Feld E.</li></ol></div></section>
+<section class="page"><div class="part"><span class="pnum">2</span><div><b>ChatGPT baut deine App</b><small>Die kostenlose Version reicht.</small></div></div><div class="step"><span class="num">1</span><div class="txt">Öffne <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> in Safari.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><circle cx="75" cy="34" r="16" fill="#E4F6EA" stroke="#2E9E5B" stroke-width="3"/><text x="75" y="41" text-anchor="middle" font-size="18" fill="#2E9E5B">✦</text><rect x="30" y="62" width="90" height="22" rx="11" fill="#7B4FD6"/><text x="75.0" y="77" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">chatgpt.com</text></svg></div></div><div class="step"><span class="num">2</span><div class="txt">Tippe deinen Prompt aus Feld E) in das Eingabefeld ganz unten. Du kannst ihn aus deinem Heft abtippen.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="14" width="120" height="5" rx="2.5" fill="#D9D2F0"/><rect x="14" y="24" width="95" height="5" rx="2.5" fill="#D9D2F0"/><rect x="14" y="34" width="120" height="5" rx="2.5" fill="#D9D2F0"/><rect x="12" y="60" width="104" height="26" rx="13" fill="#fff" stroke="#7B4FD6" stroke-width="2.5"/><text x="24" y="77" font-size="10" fill="#8a8fb0">Mein Prompt …</text><circle cx="130" cy="73" r="10" fill="#7B4FD6"/><path d="M130 78V68M125 73l5-5 5 5" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div></div><div class="step"><span class="num">3</span><div class="txt">Tippe auf den Pfeil. Warte, bis ChatGPT <b>ganz</b> fertig geschrieben hat.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><circle cx="75" cy="40" r="20" fill="none" stroke="#D9D2F0" stroke-width="6"/><path d="M75 20a20 20 0 0 1 20 20" fill="none" stroke="#7B4FD6" stroke-width="6" stroke-linecap="round"/><text x="75" y="80" text-anchor="middle" font-size="10" fill="#5F6384">ChatGPT schreibt …</text></svg></div></div><div class="step"><span class="num">4</span><div class="txt">ChatGPT zeigt einen <b>Link zum Herunterladen</b> (index.html). Tippe darauf.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="12" width="122" height="26" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="29" text-anchor="middle" font-size="11" font-weight="700" fill="#4E2BA8">index.html</text><path d="M75 54v22M64 66l11 11 11-11" fill="none" stroke="#2E9E5B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="warn"><b>Es gibt nur Code und keinen Link?</b> Schreibe ChatGPT: <b>„Erstelle aus dem Code eine Datei index.html zum Herunterladen."</b> Klappt auch das nicht, nimm Plan B auf der übernächsten Seite.</div></section>
+<section class="page"><div class="part"><span class="pnum">3</span><div><b>Die Datei auf dem iPad finden</b><small>Deine Datei muss genau <b>index.html</b> heißen.</small></div></div><div class="step"><span class="num">1</span><div class="txt">Safari fragt dich vielleicht: <b>„Laden"</b>. Tippe darauf. Oben rechts erscheint ein Pfeil nach unten.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="12" width="122" height="26" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="29" text-anchor="middle" font-size="11" font-weight="700" fill="#4E2BA8">index.html</text><path d="M75 54v22M64 66l11 11 11-11" fill="none" stroke="#2E9E5B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="step"><span class="num">2</span><div class="txt">Öffne die App <b>Dateien</b> und tippe auf den Ordner <b>„Downloads"</b>.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><path d="M24 22h38l8 10h56v44H24z" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="3" stroke-linejoin="round"/><text x="75" y="62" text-anchor="middle" font-size="12" font-weight="800" fill="#4E2BA8">Downloads</text></svg></div></div><div class="step"><span class="num">3</span><div class="txt">Suche die Datei <b>index.html</b>. Sie hat ein kleines Blatt-Symbol.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><path d="M52 14h32l16 16v44a4 4 0 0 1-4 4H52a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="3"/><path d="M84 14v16h16" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><text x="74" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#4E2BA8">index.html</text></svg></div></div><div class="step"><span class="num">4</span><div class="txt">Steht dort <b>index.html.txt</b> oder ein anderer Name? Halte die Datei lange gedrückt, tippe auf <b>„Umbenennen"</b> und ändere den Namen auf <b>index.html</b>.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="14" width="122" height="26" rx="8" fill="#FDE9E9" stroke="#D94B4B" stroke-width="2"/><text x="75" y="31" text-anchor="middle" font-size="11" fill="#D94B4B" text-decoration="line-through">index.html.txt</text><path d="M75 44v10M70 50l5 5 5-5" stroke="#5F6384" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="14" y="60" width="122" height="26" rx="8" fill="#E4F6EA" stroke="#2E9E5B" stroke-width="2"/><text x="75" y="77" text-anchor="middle" font-size="12" font-weight="800" fill="#2E9E5B">index.html</text></svg></div></div><div class="warn"><b>Achtung:</b> Wenn du die Datei hier antippst, zeigt das iPad nur eine Vorschau. Die ist oft leer oder ohne Funktion. Das ist normal. Den echten Test machst du erst mit deinem Link in Teil 4.</div></section>
+<section class="page"><div class="partb"><b>Plan B: Code selbst als Datei speichern</b><small>Nur nötig, wenn es keinen Download-Link gab. Tippe zuerst im dunklen Code-Kasten oben rechts auf „Code kopieren". Kopiere danach nichts anderes mehr. Danach weiter bei Teil 3, Schritt 3.</small></div><div class="step"><span class="num">1</span><div class="txt">Öffne die App <b>Kurzbefehle</b>.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><text x="75" y="44" text-anchor="middle" font-size="30">⌘</text><rect x="32" y="58" width="86" height="22" rx="11" fill="#7B4FD6"/><text x="75.0" y="73" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Kurzbefehle</text></svg></div></div><div class="step"><span class="num">2</span><div class="txt">Tippe oben rechts auf das <b>Plus</b>.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><circle cx="75" cy="44" r="24" fill="#7B4FD6"/><path d="M75 32v24M63 44h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg></div></div><div class="step"><span class="num">3</span><div class="txt">Tippe auf „Aktion hinzufügen". Suche <b>„Zwischenablage abrufen"</b> und tippe darauf.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="14" width="122" height="26" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="31" text-anchor="middle" font-size="11" font-weight="700" fill="#4E2BA8">Zwischenablage abrufen</text><text x="75" y="76" text-anchor="middle" font-size="24">📋</text></svg></div></div><div class="step"><span class="num">4</span><div class="txt">Füge die Aktion <b>„Datei sichern"</b> hinzu. Sie steht unter der ersten.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="8" width="122" height="26" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="25" text-anchor="middle" font-size="10" font-weight="700" fill="#4E2BA8">Zwischenablage abrufen</text><rect x="14" y="44" width="122" height="26" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="61" text-anchor="middle" font-size="11" font-weight="700" fill="#4E2BA8">Datei sichern</text><path d="M75 34v10" stroke="#7B4FD6" stroke-width="3"/></svg></div></div><div class="step"><span class="num">5</span><div class="txt">Tippe unten auf den <b>Play-Knopf</b> (Dreieck).</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><circle cx="75" cy="44" r="26" fill="#2E9E5B"/><path d="M67 31v26l22-13z" fill="#fff"/></svg></div></div><div class="step"><span class="num">6</span><div class="txt">Wähle einen Ordner. Tippe als Namen genau <b>index.html</b> ein und tippe auf „Sichern".</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="20" width="122" height="30" rx="8" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><text x="22" y="40" font-size="14" font-weight="800" fill="#1E2142">index.html</text><text x="75" y="76" text-anchor="middle" font-size="9" fill="#5F6384">genau so, alles klein</text></svg></div></div></section>
+<section class="page"><div class="part"><span class="pnum">4</span><div><b>Ins Internet stellen</b><small>Jetzt bekommt deine App einen Link. Du hast zwei Wege.</small></div></div><div class="way"><b>Weg 1: Du schickst mir die Datei</b><small>Ohne Anmeldung, der einfachste Weg.</small></div><div class="step"><span class="num">1</span><div class="txt">Öffne die App <b>Dateien</b>, dann „Downloads". Halte <b>index.html</b> lange gedrückt.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><path d="M52 14h32l16 16v44a4 4 0 0 1-4 4H52a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="3"/><path d="M84 14v16h16" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><text x="74" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#4E2BA8">index.html</text></svg></div></div><div class="step"><span class="num">2</span><div class="txt">Tippe auf <b>„Teilen"</b>. Wähle <b>Mail</b> und schicke die Datei an Herrn Hermann.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="55" y="38" width="40" height="38" rx="6" fill="none" stroke="#7B4FD6" stroke-width="4"/><path d="M75 52V12M63 24l12-12 12 12" fill="none" stroke="#7B4FD6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="warn"><b>Die Adresse von Herrn Hermann</b> sagt er dir im Unterricht.</div><div class="step"><span class="num">3</span><div class="txt">Warte auf Antwort. Du bekommst einen Link, der so aussieht: <b>https://…netlify.app</b>. Weiter bei Teil 5.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="30" y="22" width="90" height="52" rx="8" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><path d="M30 28l45 30 45-30" fill="none" stroke="#7B4FD6" stroke-width="3"/></svg></div></div></section>
+<section class="page"><div class="way"><b>Weg 2: Du stellst sie selbst ins Netz (freiwillig)</b><small>Dafür brauchst du ein kostenloses Netlify-Konto und die Erlaubnis deiner Eltern.</small></div><div class="step"><span class="num">1</span><div class="txt">Öffne in Safari <b>app.netlify.com/drop</b>.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="10" width="122" height="52" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2.5" stroke-dasharray="6 5"/><text x="75" y="33" text-anchor="middle" font-size="11" font-weight="800" fill="#4E2BA8">Drop here</text><text x="75" y="49" text-anchor="middle" font-size="10" fill="#5F6384">oder choose a file</text><rect x="30" y="68" width="90" height="22" rx="11" fill="#fff" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="83" text-anchor="middle" font-size="9" font-weight="700" fill="#4E2BA8">netlify.com/drop</text></svg></div></div><div class="step"><span class="num">2</span><div class="txt">Tippe auf das Wort <b>„file"</b>, dann auf „Durchsuchen" und wähle <b>index.html</b> aus dem Ordner „Downloads".</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="10" width="122" height="52" rx="10" fill="#EFE8FF" stroke="#7B4FD6" stroke-width="2.5" stroke-dasharray="6 5"/><text x="75" y="33" text-anchor="middle" font-size="11" font-weight="800" fill="#4E2BA8">Drop here</text><text x="75" y="49" text-anchor="middle" font-size="10" fill="#5F6384">oder choose a file</text><rect x="30" y="68" width="90" height="22" rx="11" fill="#fff" stroke="#7B4FD6" stroke-width="2"/><text x="75.0" y="83" text-anchor="middle" font-size="9" font-weight="700" fill="#4E2BA8">netlify.com/drop</text></svg></div></div><div class="step"><span class="num">3</span><div class="txt">Nach wenigen Sekunden steht dort <b>„Your project is live"</b> und dein Link. <b>Aber:</b> Ohne Konto ist die Seite nur <b>1 Stunde</b> online und mit einem Passwort geschützt.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="12" y="12" width="126" height="22" rx="11" fill="#E4F6EA"/><text x="75" y="27" text-anchor="middle" font-size="10" font-weight="800" fill="#2E9E5B">Your project is live</text><text x="75" y="52" text-anchor="middle" font-size="9" fill="#4E2BA8">…netlify.app</text><rect x="30" y="62" width="90" height="22" rx="11" fill="#7B4FD6"/><text x="75.0" y="77" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">Claim this site</text></svg></div></div><div class="step"><span class="num">4</span><div class="txt">Damit sie bleibt: Tippe auf <b>„Claim this site"</b> und lege ein kostenloses Konto an (z.B. mit E-Mail). Gib <b>nie</b> Zahlungsdaten ein, alles hier ist gratis.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="12" y="12" width="126" height="22" rx="11" fill="#E4F6EA"/><text x="75" y="27" text-anchor="middle" font-size="10" font-weight="800" fill="#2E9E5B">Your project is live</text><text x="75" y="52" text-anchor="middle" font-size="9" fill="#4E2BA8">…netlify.app</text><rect x="30" y="62" width="90" height="22" rx="11" fill="#7B4FD6"/><text x="75.0" y="77" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">Claim this site</text></svg></div></div><div class="warn"><b>Du willst kein Konto?</b> Dann nimm Weg 1. Deine App ist dann genauso gut. Frag im Zweifel deine Lehrkraft.</div></section>
+<section class="page"><div class="part"><span class="pnum">5</span><div><b>Die App auf den Home-Bildschirm</b><small>Mit deinem Link wird aus der Webseite eine echte App.</small></div></div><div class="step"><span class="num">1</span><div class="txt">Öffne deinen Link in <b>Safari</b>. Deine To-do-App erscheint. Probiere sie kurz aus. Deine Test-Aufgaben sind später auf dem Home-Bildschirm weg, das ist normal.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="12" y="12" width="126" height="22" rx="11" fill="#EFE8FF"/><text x="75" y="27" text-anchor="middle" font-size="10" fill="#4E2BA8">dein-link.netlify.app</text><rect x="20" y="46" width="110" height="5" rx="2.5" fill="#D9D2F0"/><rect x="20" y="56" width="85" height="5" rx="2.5" fill="#D9D2F0"/><rect x="20" y="66" width="110" height="5" rx="2.5" fill="#D9D2F0"/></svg></div></div><div class="step"><span class="num">2</span><div class="txt">Tippe auf das <b>Teilen-Symbol</b> (Quadrat mit Pfeil nach oben).</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="55" y="38" width="40" height="38" rx="6" fill="none" stroke="#7B4FD6" stroke-width="4"/><path d="M75 52V12M63 24l12-12 12 12" fill="none" stroke="#7B4FD6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="step"><span class="num">3</span><div class="txt">Tippe auf <b>„Zum Home-Bildschirm"</b>. Wenn du den Eintrag nicht siehst, scrolle im Menü nach unten.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="14" y="14" width="122" height="28" rx="8" fill="#EFE8FF"/><text x="26" y="32" font-size="10" font-weight="700" fill="#4E2BA8">Zum Home-Bildschirm</text><text x="118" y="34" font-size="15" fill="#4E2BA8">＋</text><rect x="34" y="54" width="82" height="22" rx="11" fill="#7B4FD6"/><text x="75.0" y="69" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Hinzufügen</text></svg></div></div><div class="step"><span class="num">4</span><div class="txt">Tippe oben rechts auf <b>„Hinzufügen"</b>. Fertig! Dein Symbol liegt jetzt auf dem Home-Bildschirm. Tippe es an: Deine App startet im Vollbild.</div><div class="pic"><svg viewBox="0 0 150 96" width="150" height="96" role="img" aria-hidden="true"><rect x="2" y="2" width="146" height="92" rx="10" fill="#fff" stroke="#7B4FD6" stroke-width="3"/><rect x="49" y="12" width="52" height="52" rx="13" fill="#1b2a4e"/><path d="M62 38l9 9 17-18" stroke="#7CF0A8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="75" y="82" text-anchor="middle" font-size="9" font-weight="700" fill="#1E2142">Meine To-dos</text></svg></div></div><div class="warn"><b>Gut zu wissen:</b> Deine Aufgaben liegen nur auf diesem iPad, nicht in der Cloud. Schreibe keine Passwörter oder private Daten anderer hinein.</div></section>
+<section class="page">
+<h2 class="h2">Geschafft! Mein Check</h2>
+<div class="card"><ul class="check">
+<li>Ich kann Aufgaben eintragen, abhaken und löschen.</li>
+<li>Nach dem Schließen und Neuöffnen sind meine Aufgaben noch da.</li>
+<li>Meine App sieht so aus, wie ich es mir ausgedacht habe.</li>
+<li>Sie liegt auf meinem Home-Bildschirm und startet im Vollbild.</li>
+</ul></div>
+<h2 class="h2">Hilfe: Wenn etwas nicht klappt</h2>
+<div class="card"><b>Sätze, die du ChatGPT schreiben kannst</b>
+<ul class="sents">
+<li>„Beim Klick auf Hinzufügen passiert nichts. Finde den Fehler und gib mir die komplette Datei neu."</li>
+<li>„Mach die Buttons größer und die Schrift besser lesbar."</li>
+<li>„Nach dem Neuladen sind die Aufgaben weg. Speichere sie dauerhaft."</li>
+<li>„Füge einen Button hinzu, der alle erledigten Aufgaben löscht."</li>
+<li>„Ändere nur die Farben. Der Rest soll genau so bleiben."</li>
+</ul></div>
+<div class="card"><b>Typische Probleme</b>
+<table>
+<tr><th>Problem</th><th>Das hilft</th></tr>
+<tr><td>Es gibt keinen Download-Link</td><td>Schreibe: „Erstelle aus dem Code eine Datei index.html zum Herunterladen." Sonst Plan B (Kurzbefehl).</td></tr>
+<tr><td>Die Datei heißt index.html.txt</td><td>In „Dateien" lange drücken, „Umbenennen", .txt löschen.</td></tr>
+<tr><td>Die Vorschau in „Dateien" ist leer</td><td>Normal. Teste die App erst mit deinem Link in Safari.</td></tr>
+<tr><td>Mein Link geht nicht mehr</td><td>Ohne Konto ist er nur 1 Stunde da. Schicke die Datei an Herrn Hermann oder lege ein Konto an.</td></tr>
+<tr><td>Auf dem Link will jemand ein Passwort</td><td>Das ist der Schutz bis zur Anmeldung. Nutze Weg 1 oder melde dich an.</td></tr>
+<tr><td>Meine Aufgaben sind weg</td><td>Hast du die App im Safari-Tab und als Symbol benutzt? Beide haben getrennte Listen. Benutze nur das Symbol.</td></tr>
+</table></div>
+</section>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(function () {
+  var toast = document.getElementById('toast');
+  var tt;
+  function say(msg) {
+    toast.textContent = msg; toast.classList.add('show');
+    clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, 1800);
+  }
+  function copyText(t) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(t).then(function () { return true; }, function () { return legacy(t); });
+    }
+    return Promise.resolve(legacy(t));
+  }
+  function legacy(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta); return ok;
+  }
+  function doCopy(btn, text) {
+    if (!text.trim()) { say('Hier steht noch nichts zum Kopieren.'); return; }
+    copyText(text).then(function (ok) {
+      if (!ok) { say('Kopieren hat nicht geklappt. Markiere den Text und halte ihn gedrückt.'); return; }
+      var old = btn.textContent; btn.textContent = 'Kopiert!'; btn.classList.add('ok');
+      say('Kopiert. Jetzt in ChatGPT einfügen.');
+      setTimeout(function () { btn.textContent = old; btn.classList.remove('ok'); }, 1600);
+    });
+  }
+  function rulesText() {
+    return Array.prototype.map.call(document.querySelectorAll('#rules li'), function (li) { return '- ' + li.textContent.trim(); }).join('\n');
+  }
+  function val(id) { return (document.getElementById(id).value || '').trim(); }
+
+  // Felder: automatisch auf diesem Gerät merken
+  ['f1', 'f2', 'f3', 'f4', 'f5'].forEach(function (id) {
+    var el = document.getElementById(id), key = 'todo-bauen-' + id;
+    try { var v = localStorage.getItem(key); if (v) el.value = v; } catch (e) {}
+    el.addEventListener('input', function () { try { localStorage.setItem(key, el.value); } catch (e) {} });
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.copy) doCopy(b, val(b.dataset.copy));
+    else if (b.dataset.copyList) doCopy(b, rulesText());
+    else if (b.dataset.sent) doCopy(b, document.getElementById(b.dataset.sent).textContent.trim());
+  });
+
+  // Kopieren-Knopf unter jeden Beispielsatz und neben die Hilfe-Sätze
+  Array.prototype.forEach.call(document.querySelectorAll('.sent'), function (el) {
+    var t = document.createElement('div'); t.className = 'tools';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'copy';
+    b.dataset.sent = el.id; b.textContent = 'Satz kopieren';
+    t.appendChild(b); el.parentNode.insertBefore(t, el.nextSibling);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.sents li'), function (li, i) {
+    var span = document.createElement('span'); span.id = 'h' + i; span.textContent = li.textContent;
+    li.textContent = ''; li.appendChild(span);
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'copy tools';
+    b.dataset.sent = span.id; b.textContent = 'Kopieren'; li.appendChild(b);
+  });
+
+  document.getElementById('build').addEventListener('click', function () {
+    var a = val('f1'), b = val('f2'), c = val('f3'), z = val('f4');
+    if (!a || !b) { say('Schreibe zuerst etwas bei A und B.'); return; }
+    var text = 'Baue mir eine To-do-App als einzelne Datei index.html.\n\n' +
+      'Das soll die App können:\n' + a + '\n\n' +
+      'So soll sie aussehen:\n' + b + '\n\n' +
+      (c ? 'So wird sie benutzt:\n' + c + '\n\n' : '') +
+      'Diese Regeln gelten:\n' + rulesText() + (z ? '\n' + z : '');
+    var f5 = document.getElementById('f5');
+    f5.value = text;
+    try { localStorage.setItem('todo-bauen-f5', text); } catch (e) {}
+    say('Fertig! Lies den Prompt noch einmal durch.');
+  });
+})();
+</script>
+</body>
+</html>
